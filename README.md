@@ -25,7 +25,7 @@ one-time model download).
 - **uv** – isolated Python 3.12 env (system Python 3.14 is too new for the ML
   wheels).
 
-Your machine is an AMD Phoenix1 iGPU (no CUDA), so the whole pipeline is
+Works on an AMD Phoenix1 iGPU (no CUDA), so the whole pipeline is
 CPU-only by design. Typical run is a second or two.
 
 ## Install
@@ -37,9 +37,6 @@ CPU-only by design. Typical run is a second or two.
 This installs the system packages (via `sudo dnf`), creates the uv environment,
 and pre-downloads the Argos models (`ar→en`, `fa→en`). Review the script first.
 
-> Per your workflow, nothing here is auto-run with sudo by the agent — run
-> `install.sh` yourself.
-
 ## Test it manually
 
 ```bash
@@ -50,7 +47,7 @@ wl-copy --type image/png < some_image.png
 ./ocr-translate.sh
 ```
 
-The translated (or OCR'd) text is now on your clipboard — paste anywhere.
+The translated (or OCRed) text is now on your clipboard. 
 
 ## Bind a global shortcut (Plasma 6)
 
@@ -58,8 +55,15 @@ The reliable path on Plasma 6.7 is the GUI:
 
 1. System Settings → **Keyboard** → **Shortcuts** → **Add New** →
    **Command or Script**.
-2. Command:
-   `/home/simon/git/fedora-extension-ocr-translate/ocr-translate.sh`
+2. Command: the **absolute** path to `ocr-translate.sh` in your clone (KDE
+   won't expand `~` or relative paths). Get it by running this from the repo
+   root:
+
+   ```bash
+   echo "$(pwd)/ocr-translate.sh"
+   ```
+
+   e.g. `/home/youruser/fedora-extension-ocr-translate/ocr-translate.sh`.
 3. Click the shortcut field and press your key, e.g. **Meta+Shift+T**.
 4. Apply.
 
@@ -85,7 +89,7 @@ Environment variables (set them in the shortcut command if you want to override)
 Example shortcut command with Farsi added to OCR:
 
 ```bash
-OCR_TRANSLATE_LANGS=eng+ara+fas /home/simon/git/fedora-extension-ocr-translate/ocr-translate.sh
+OCR_TRANSLATE_LANGS=eng+ara+fas /path/to/fedora-extension-ocr-translate/ocr-translate.sh
 ```
 
 ## Adding languages
@@ -125,7 +129,6 @@ PY
 ## Notes / limitations
 
 - Tesseract is weaker on noisy, low-contrast, or handwritten text. If accuracy
-  is poor, we can swap the OCR stage for RapidOCR/PaddleOCR (ONNX, CPU) later —
-  the pipeline is modular (`ocr()` in `ocr_translate.py`).
-- Language auto-detection runs on the OCR'd text; very short strings can be
+  is poor, we can swap the OCR stage for RapidOCR/PaddleOCR (ONNX, CPU). The pipeline is modular (`ocr()` in `ocr_translate.py`).
+- Language auto-detection runs on the OCRed text; very short strings can be
   mis-detected.
