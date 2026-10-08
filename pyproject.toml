@@ -1,0 +1,13 @@
+[project]
+name = "ocr-translate"
+version = "0.1.0"
+description = "Clipboard screenshot OCR + offline translation for Fedora KDE"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "argostranslate>=1.9.6",
+    "langdetect>=1.0.9",
+    "pillow>=10.0.0",
+]
+
+[tool.uv]
+# Argos ships CPU torch wheels; keep the env isolated from system python 3.14.
